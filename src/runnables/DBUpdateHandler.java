@@ -1,10 +1,13 @@
 package runnables;
 
+import helpers.WeatherDB;
+import interfaces.DBConnector;
 import models.DataFrame;
+import models.WeatherData;
 
 public class DBUpdateHandler implements Runnable {
 
-    public DBUpdateHandler(DataFrame[] dataFrameBuffer) {
+    public DBUpdateHandler(DataFrame[] dataFrameBuffer, WeatherDB dbConnector) {
 
     }
 

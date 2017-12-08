@@ -14,6 +14,7 @@ public class DataFrame implements Iterable{
      */
     public DataFrame() {
         this.size = 0;
+        this.items = new LinkedList<DBItem>();
     }
 
     public DataFrame(DBItem[] items) {
@@ -31,6 +32,10 @@ public class DataFrame implements Iterable{
 
     public int getSize() {
         return size;
+    }
+
+    public DBItem[] getItems() {
+        return (DBItem[]) items.toArray();
     }
 
     @Override
