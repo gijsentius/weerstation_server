@@ -23,5 +23,6 @@ public abstract class DBConnector {
         this.dataSource = new MysqlDataSource();
     }
 
-    public abstract void connectDB(String user, String password, String server) throws SQLException;
+    public abstract void connectDB(String user, String password, String server) throws SQLException, ClassNotFoundException;
+    public abstract void closeDB() throws SQLException;
 }

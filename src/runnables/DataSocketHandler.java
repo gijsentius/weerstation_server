@@ -56,8 +56,11 @@ public class DataSocketHandler implements Runnable {
                 DataFrame dataFrame = new DataFrame(dbItems);
                 dataFrameBuffer.updateBuffer(dataFrame);
             } catch (BufferOverflowPreventException e) {
-                Thread updateDB = new Thread(new DBUpdateHandler(e.getBuffer()));
+                Thread updateDB = new Thread(new DataUpdateHandler(e.getBuffer()));
                 updateDB.start();
+            } catch (InactiveSocketException e) {
+                e.printStackTrace();
+                running = false;
             } catch (IOException e) {
                 running = false;  // Check for a more subtle solution
             } catch (TransformerConfigurationException e) {
@@ -65,13 +68,8 @@ public class DataSocketHandler implements Runnable {
                 running = false;
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();
-                running = false;
             } catch (SAXException e) {
                 e.printStackTrace();
-                running = false;
-            } catch (InactiveSocketException e) {
-                e.printStackTrace();
-                running = false;
             }
         }
     }

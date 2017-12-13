@@ -17,6 +17,7 @@ public class InputDataParser {
         int index = 0;
         document.getDocumentElement().normalize();
         DBItem[] items = new WeatherData[NUMBER_OF_DATA_ITEMS];
+        // build 10 weather data items
         return items;
     }
 }
