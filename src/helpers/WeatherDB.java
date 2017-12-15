@@ -1,12 +1,9 @@
 package helpers;
 
-import enums.SQLCommand;
 import interfaces.DBConnector;
-import interfaces.DBItem;
+import interfaces.DataItem;
 import models.DataFrame;
-import models.WeatherData;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,7 +39,7 @@ public class WeatherDB extends DBConnector {
 
     public void updateDB(DataFrame[] dataFrames) throws SQLException {
         for (DataFrame frame: dataFrames) {
-            for (DBItem item : frame.getItems()) {
+            for (DataItem item : frame.getItems()) {
                 Dictionary d = item.getData();
                 // do stuff with the db
             }

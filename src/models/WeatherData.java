@@ -1,6 +1,6 @@
 package models;
 
-import interfaces.DBItem;
+import interfaces.DataItem;
 
 import java.util.Dictionary;
 
@@ -8,7 +8,7 @@ import java.util.Dictionary;
  * TODO add all the weather data subjects
  * TODO fix the data in a dictionary structure so the database handling can be done easily
  */
-public class WeatherData implements DBItem{
+public class WeatherData implements DataItem {
 
     /**
      * Class that represents the weather data

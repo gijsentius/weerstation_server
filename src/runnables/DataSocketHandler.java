@@ -4,7 +4,7 @@ import exceptions.BufferOverflowPreventException;
 import exceptions.InactiveSocketException;
 import helpers.InputDataParser;
 import helpers.XMLReceiver;
-import interfaces.DBItem;
+import interfaces.DataItem;
 import models.DataFrame;
 import models.DataFrameBuffer;
 import org.w3c.dom.Document;
@@ -52,12 +52,11 @@ public class DataSocketHandler implements Runnable {
         while (running) {
             try {
                 Document xmlDocument = XMLReceiver.receiveDocument(clientSocket.getInputStream());
-                DBItem[] dbItems = InputDataParser.parse(xmlDocument);
-                DataFrame dataFrame = new DataFrame(dbItems);
+                DataItem[] dataItems = InputDataParser.parse(xmlDocument);
+                DataFrame dataFrame = new DataFrame(dataItems);
                 dataFrameBuffer.updateBuffer(dataFrame);
             } catch (BufferOverflowPreventException e) {
-                Thread updateDB = new Thread(new DataUpdateHandler(e.getBuffer()));
-                updateDB.start();
+                new Thread(new DataUpdateHandler(e.getBuffer())).start();
             } catch (InactiveSocketException e) {
                 e.printStackTrace();
                 running = false;

@@ -34,7 +34,7 @@ public class ThreadedWeatherServer implements Runnable{
     public static void main(String [ ] args)
     {
         try {
-            new ThreadedWeatherServer(8080, 100, 800).run();
+            new ThreadedWeatherServer(8080, 1000, 800).run();
         } catch (IOException e) {
             e.printStackTrace();
         }

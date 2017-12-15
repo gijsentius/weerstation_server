@@ -1,10 +1,9 @@
 package models;
 
-import interfaces.DBItem;
+import interfaces.DataItem;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 public class DataFrame implements Iterable{
     private int size;
@@ -14,18 +13,18 @@ public class DataFrame implements Iterable{
      */
     public DataFrame() {
         this.size = 0;
-        this.items = new LinkedList<DBItem>();
+        this.items = new LinkedList<DataItem>();
     }
 
-    public DataFrame(DBItem[] items) {
+    public DataFrame(DataItem[] items) {
         this.size = items.length;
-        this.items = new LinkedList<DBItem>();
-        for (DBItem item : items) {
+        this.items = new LinkedList<DataItem>();
+        for (DataItem item : items) {
             addItem(item);
         }
     }
 
-    public void addItem(DBItem item) {
+    public void addItem(DataItem item) {
         this.items.add(item);
         this.size++;
     }
@@ -34,8 +33,8 @@ public class DataFrame implements Iterable{
         return size;
     }
 
-    public DBItem[] getItems() {
-        return (DBItem[]) items.toArray();
+    public DataItem[] getItems() {
+        return (DataItem[]) items.toArray();
     }
 
     @Override
