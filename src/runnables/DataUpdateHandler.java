@@ -1,18 +1,18 @@
 package runnables;
 
-import helpers.WeatherDB;
-import interfaces.DBConnector;
+import helpers.WeatherDatabase;
+import helpers.WeatherFileStorage;
 import models.DataFrame;
-import models.WeatherData;
 
 import java.sql.SQLException;
 
 public class DataUpdateHandler implements Runnable {
-    private WeatherDB weatherDB;
+    private WeatherDatabase weatherDatabase;
+    private WeatherFileStorage weatherFileStorage;
     private DataFrame[] dataFrames;
 
-    public DataUpdateHandler(DataFrame[] dataFrameBuffer, WeatherDB dbConnector) {
-        weatherDB = dbConnector;
+    public DataUpdateHandler(DataFrame[] dataFrameBuffer, WeatherDatabase weatherDatabase) {
+        weatherDatabase = weatherDatabase;
         dataFrames = dataFrameBuffer;
     }
 
@@ -21,15 +21,20 @@ public class DataUpdateHandler implements Runnable {
      * This wil be the constructor for the filesystem type
      * @param buffer
      */
+    public DataUpdateHandler(DataFrame[] buffer, WeatherFileStorage weatherFileStorage) {
+
+    }
+
     public DataUpdateHandler(DataFrame[] buffer) {
 
     }
+
 
     @Override
     public void run() {
         System.out.println("Wow the db update thread is running");
         try {
-            weatherDB.updateDB(dataFrames);
+            weatherDatabase.updateDB(dataFrames);
         } catch (SQLException e) {
             e.printStackTrace();
         }

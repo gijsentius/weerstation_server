@@ -12,8 +12,8 @@ import java.util.Dictionary;
 /**
  * https://www.youtube.com/watch?v=BCqW5XwtJxY
  */
-public class WeatherDB extends DBConnector {
-    public WeatherDB() throws SQLException {
+public class WeatherDatabase extends DBConnector {
+    public WeatherDatabase() throws SQLException {
         super();
     }
 

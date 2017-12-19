@@ -31,11 +31,24 @@ public class ThreadedWeatherServer implements Runnable{
             }
     }
 
+    public void terminate() {
+        try {
+            this.serverSocket.close();
+        } catch (IOException ex) {
+            // What do we catch here
+        }
+    }
+
     public static void main(String [ ] args)
     {
+        ThreadedWeatherServer ts = null;
         try {
-            new ThreadedWeatherServer(8080, 1000, 800).run();
+            ts = new ThreadedWeatherServer(8080, 1000, 800);
+            ts.run();
         } catch (IOException e) {
+            if (ts != null) {  // maybe a more subtle solution can be found for the termination of the socket
+                ts.terminate();
+            }
             e.printStackTrace();
         }
     }
