@@ -9,9 +9,11 @@ import models.DataFrame;
 import models.DataFrameBuffer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import tests.PrettyPrinters;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import java.io.*;
 import java.net.Socket;
@@ -52,22 +54,25 @@ public class DataSocketHandler implements Runnable {
         while (running) {
             try {
                 Document xmlDocument = XMLReceiver.receiveDocument(clientSocket.getInputStream());
+                PrettyPrinters.printDocument(xmlDocument, System.out);  //Printer for documents, comment out in production phase
                 DataItem[] dataItems = InputDataParser.parse(xmlDocument);
                 DataFrame dataFrame = new DataFrame(dataItems);
                 dataFrameBuffer.updateBuffer(dataFrame);
             } catch (BufferOverflowPreventException e) {
                 new Thread(new DataUpdateHandler(e.getBuffer())).start();
-            } catch (InactiveSocketException e) {
-                e.printStackTrace();
-                running = false;
-            } catch (IOException e) {
+            }  catch (IOException e) {
                 running = false;  // Check for a more subtle solution
             } catch (TransformerConfigurationException e) {
                 e.printStackTrace();
                 running = false;
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();
+            } catch (InactiveSocketException e) {
+                e.printStackTrace();
+                running = false;
             } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (TransformerException e) {
                 e.printStackTrace();
             }
         }
