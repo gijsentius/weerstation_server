@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Dictionary;
+import java.util.HashMap;
 
 /**
  * https://www.youtube.com/watch?v=BCqW5XwtJxY
@@ -42,7 +43,7 @@ public class WeatherDatabase extends DBConnector implements StorageHandler{
     public void update(DataFrame[] dataFrames) throws SQLException {
         for (DataFrame frame: dataFrames) {
             for (DataItem item : frame.getItems()) {
-                Dictionary d = item.getData();
+                HashMap d = item.getData();
                 // do stuff with the db
             }
         }

@@ -3,6 +3,8 @@ package models;
 import interfaces.DataItem;
 
 import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.HashMap;
 
 /**
  * TODO add all the weather data subjects
@@ -10,21 +12,27 @@ import java.util.Dictionary;
  */
 public class WeatherData implements DataItem {
 
+    private HashMap<String, String > data;
+
     /**
      * Class that represents the weather data
      */
     public WeatherData() {
+        data = new HashMap<>();
+    }
 
+    public void addItem(String name, String value) {
+        data.put(name, value);
     }
 
     @Override
     public String[] getHeaders() {
-        return new String[0];
+        return null;
     }
 
     @Override
-    public Dictionary getData() {
-        return null;
+    public HashMap getData() {
+        return this.data;
     }
 
     @Override

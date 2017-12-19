@@ -4,6 +4,9 @@ import interfaces.DataItem;
 import models.DataFrame;
 import models.WeatherData;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.LinkedList;
 
@@ -28,8 +31,26 @@ public class InputDataParser {
         LinkedList<DataItem> items = new LinkedList<>();
         /*
         build a dataframe here
+        */
+        Element origin = document.getDocumentElement();
+        NodeList weatherStations = origin.getChildNodes();
+        for (int i=0;i<weatherStations.getLength();i++) {
+            NodeList stationData = weatherStations.item(i).getChildNodes();
+            WeatherData weatherData = new WeatherData();
+            for (int j=0;j< stationData.getLength();j++) {
+                if (stationData.item(j).getChildNodes().getLength() > 0) {
+                    weatherData.addItem(stationData.item(j).getNodeName(), stationData.item(j).getChildNodes().item(0).getNodeValue());
+                    System.out.println(stationData.item(j).getNodeName() + " : " + stationData.item(j).getChildNodes().item(0).getNodeValue());
+                }
+            }
+            System.out.println(weatherData.getData().toString());
+            items.add(weatherData);
+        }
+        /*
+        first check the integrity of the files
          */
-        DataFrame df = new DataFrame(items);
-        return df;
+        return new DataFrame(items);
     }
+
+
 }
