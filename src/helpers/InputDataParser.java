@@ -5,7 +5,7 @@ import models.WeatherData;
 import org.w3c.dom.Document;
 
 public class InputDataParser {
-    private static final int NUMBER_OF_DATA_ITEMS = 10;
+    private static final int NUMBER_OF_DATA_ITEMS = 10;  // 10 is chosen because each xml file contains 10
 
     public static DataItem[] parse(String document) {
         int index = 0;
@@ -13,6 +13,11 @@ public class InputDataParser {
         return items;
     }
 
+    /**
+     * source: https://stackoverflow.com/questions/4734586/how-to-get-root-node-attributes-on-java
+     * @param document
+     * @return
+     */
     public static DataItem[] parse(Document document) {
         int index = 0;
         document.getDocumentElement().normalize();

@@ -5,6 +5,7 @@ import exceptions.InactiveSocketException;
 import helpers.InputDataParser;
 import helpers.XMLReceiver;
 import interfaces.DataItem;
+import loggers.ExceptionLogger;
 import models.DataFrame;
 import models.DataFrameBuffer;
 import org.w3c.dom.Document;
@@ -23,6 +24,7 @@ import java.net.Socket;
  * https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html
  * https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html
  * https://stackoverflow.com/questions/4666748/how-to-read-bufferedreader-faster
+ * TODO: fix the exception logging system
  */
 public class DataSocketHandler implements Runnable {
     private DataFrameBuffer dataFrameBuffer;
@@ -41,7 +43,7 @@ public class DataSocketHandler implements Runnable {
 
     /**
      * Function to close the socket
-     * Is not working and not tested, because information regarding the closing of a thread needs to be found out
+     * Is not working and not tested (19-12-17), because information regarding the closing of a thread needs to be found out first
      * @throws IOException
      */
     public void closeConnection() throws IOException {
@@ -63,10 +65,12 @@ public class DataSocketHandler implements Runnable {
             }  catch (IOException e) {
                 running = false;  // Check for a more subtle solution
             } catch (TransformerConfigurationException | InactiveSocketException e) {
-                e.printStackTrace();
+                ExceptionLogger.logException(e);
                 running = false;
             } catch (ParserConfigurationException | TransformerException | SAXException e) {
-                e.printStackTrace();
+                ExceptionLogger.logException(e);
+            } catch (Exception e) {
+                ExceptionLogger.logException(e);
             }
         }
     }

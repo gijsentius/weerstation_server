@@ -1,3 +1,4 @@
+import loggers.ExceptionLogger;
 import models.DataFrameBuffer;
 import runnables.DataSocketHandler;
 
@@ -26,16 +27,18 @@ public class ThreadedWeatherServer implements Runnable{
                 while(true) {
                     pool.execute(new DataSocketHandler(serverSocket.accept(), this.dataFrameBuffer));
                 }
-            } catch (IOException ex) {
+            } catch (IOException e) {
                 pool.shutdown();
+                ExceptionLogger.logException(e);
             }
     }
 
     public void terminate() {
         try {
             this.serverSocket.close();
-        } catch (IOException ex) {
+        } catch (IOException e) {
             // What do we catch here
+            ExceptionLogger.logException(e);
         }
     }
 
@@ -45,12 +48,11 @@ public class ThreadedWeatherServer implements Runnable{
         try {
             ts = new ThreadedWeatherServer(8080, 1000, 800);
             ts.run();
-            System.out.println("t");
         } catch (IOException e) {
             if (ts != null) {  // maybe a more subtle solution can be found for the termination of the socket
                 ts.terminate();
+                ExceptionLogger.logException(e);
             }
-            e.printStackTrace();
         }
     }
 }

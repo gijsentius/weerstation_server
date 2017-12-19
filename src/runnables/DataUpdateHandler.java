@@ -3,6 +3,7 @@ package runnables;
 import helpers.WeatherDatabase;
 import helpers.WeatherFileStorage;
 import interfaces.StorageHandler;
+import loggers.ExceptionLogger;
 import models.DataFrame;
 
 import java.sql.SQLException;
@@ -36,7 +37,7 @@ public class DataUpdateHandler implements Runnable {
         try {
             storageHandler.update(dataFrames);
         } catch (SQLException e) {
-            e.printStackTrace();
+            ExceptionLogger.logException(e);
         }
     }
 }
