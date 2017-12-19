@@ -2,6 +2,7 @@ package helpers;
 
 import interfaces.DBConnector;
 import interfaces.DataItem;
+import interfaces.StorageHandler;
 import models.DataFrame;
 
 import java.sql.DriverManager;
@@ -12,7 +13,7 @@ import java.util.Dictionary;
 /**
  * https://www.youtube.com/watch?v=BCqW5XwtJxY
  */
-public class WeatherDatabase extends DBConnector {
+public class WeatherDatabase extends DBConnector implements StorageHandler{
     public WeatherDatabase() throws SQLException {
         super();
     }
@@ -37,7 +38,8 @@ public class WeatherDatabase extends DBConnector {
         connection.close();
     }
 
-    public void updateDB(DataFrame[] dataFrames) throws SQLException {
+    @Override
+    public void update(DataFrame[] dataFrames) throws SQLException {
         for (DataFrame frame: dataFrames) {
             for (DataItem item : frame.getItems()) {
                 Dictionary d = item.getData();

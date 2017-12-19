@@ -1,4 +1,14 @@
 package helpers;
 
-public class WeatherFileStorage {
+import interfaces.StorageHandler;
+import models.DataFrame;
+
+import java.sql.SQLException;
+
+public class WeatherFileStorage implements StorageHandler{
+
+    @Override
+    public void update(DataFrame[] dataFrames) throws SQLException {
+
+    }
 }
