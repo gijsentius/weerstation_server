@@ -62,17 +62,10 @@ public class DataSocketHandler implements Runnable {
                 new Thread(new DataUpdateHandler(e.getBuffer())).start();
             }  catch (IOException e) {
                 running = false;  // Check for a more subtle solution
-            } catch (TransformerConfigurationException e) {
+            } catch (TransformerConfigurationException | InactiveSocketException e) {
                 e.printStackTrace();
                 running = false;
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            } catch (InactiveSocketException e) {
-                e.printStackTrace();
-                running = false;
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (TransformerException e) {
+            } catch (ParserConfigurationException | TransformerException | SAXException e) {
                 e.printStackTrace();
             }
         }

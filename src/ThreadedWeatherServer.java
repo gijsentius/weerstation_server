@@ -45,6 +45,7 @@ public class ThreadedWeatherServer implements Runnable{
         try {
             ts = new ThreadedWeatherServer(8080, 1000, 800);
             ts.run();
+            System.out.println("t");
         } catch (IOException e) {
             if (ts != null) {  // maybe a more subtle solution can be found for the termination of the socket
                 ts.terminate();
