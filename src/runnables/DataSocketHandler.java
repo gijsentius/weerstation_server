@@ -57,19 +57,14 @@ public class DataSocketHandler implements Runnable {
             try {
                 Document xmlDocument = XMLReceiver.receiveDocument(clientSocket.getInputStream());
                 PrettyPrinters.printDocument(xmlDocument, System.out);  //Printer for documents, comment out in production phase
-                DataItem[] dataItems = InputDataParser.parse(xmlDocument);
-                DataFrame dataFrame = new DataFrame(dataItems);
+                DataFrame dataFrame = InputDataParser.parse(xmlDocument);
                 dataFrameBuffer.updateBuffer(dataFrame);
             } catch (BufferOverflowPreventException e) {
                 new Thread(new DataUpdateHandler(e.getBuffer())).start();
-            }  catch (IOException e) {
+            }  catch (IOException | TransformerConfigurationException | InactiveSocketException e) {
+                ExceptionLogger.logException(e);
                 running = false;  // Check for a more subtle solution
-            } catch (TransformerConfigurationException | InactiveSocketException e) {
-                ExceptionLogger.logException(e);
-                running = false;
             } catch (ParserConfigurationException | TransformerException | SAXException e) {
-                ExceptionLogger.logException(e);
-            } catch (Exception e) {
                 ExceptionLogger.logException(e);
             }
         }

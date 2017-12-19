@@ -6,7 +6,7 @@ import java.util.Dictionary;
 
 /**
  * TODO add all the weather data subjects
- * TODO fix the data in a dictionary structure so the database handling can be done easily
+ * TODO fix the data in a dictionary structure so the data handling can be done easily
  */
 public class WeatherData implements DataItem {
 

@@ -16,12 +16,8 @@ public class DataFrame implements Iterable{
         this.items = new LinkedList<DataItem>();
     }
 
-    public DataFrame(DataItem[] items) {
-        this.size = items.length;
-        this.items = new LinkedList<DataItem>();
-        for (DataItem item : items) {
-            addItem(item);
-        }
+    public DataFrame(LinkedList<DataItem> items) {
+        this.items = items;
     }
 
     public void addItem(DataItem item) {
@@ -33,8 +29,8 @@ public class DataFrame implements Iterable{
         return size;
     }
 
-    public DataItem[] getItems() {
-        return (DataItem[]) items.toArray();
+    public LinkedList<DataItem> getItems() {
+        return items;
     }
 
     @Override

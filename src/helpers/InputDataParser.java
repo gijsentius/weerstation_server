@@ -1,16 +1,20 @@
 package helpers;
 
 import interfaces.DataItem;
+import models.DataFrame;
 import models.WeatherData;
 import org.w3c.dom.Document;
 
-public class InputDataParser {
-    private static final int NUMBER_OF_DATA_ITEMS = 10;  // 10 is chosen because each xml file contains 10
+import java.util.LinkedList;
 
-    public static DataItem[] parse(String document) {
+public class InputDataParser {
+//    private static final int NUMBER_OF_DATA_ITEMS = 10;  // 10 is chosen because each xml file contains 10
+
+    public static DataFrame parse(String document) {
         int index = 0;
-        DataItem[] items = new WeatherData[NUMBER_OF_DATA_ITEMS];
-        return items;
+        LinkedList<DataItem> items = new LinkedList<>();
+        DataFrame df = new DataFrame(items);
+        return df;
     }
 
     /**
@@ -18,11 +22,14 @@ public class InputDataParser {
      * @param document
      * @return
      */
-    public static DataItem[] parse(Document document) {
+    public static DataFrame parse(Document document) {
         int index = 0;
         document.getDocumentElement().normalize();
-        DataItem[] items = new WeatherData[NUMBER_OF_DATA_ITEMS];
-        // build 10 weather data items
-        return items;
+        LinkedList<DataItem> items = new LinkedList<>();
+        /*
+        build a dataframe here
+         */
+        DataFrame df = new DataFrame(items);
+        return df;
     }
 }
