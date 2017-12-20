@@ -40,17 +40,16 @@ public class InputDataParser {
             for (int j=0;j< stationData.getLength();j++) {
                 if (stationData.item(j).getChildNodes().getLength() > 0) {
                     weatherData.addItem(stationData.item(j).getNodeName(), stationData.item(j).getChildNodes().item(0).getNodeValue());
-                    System.out.println(stationData.item(j).getNodeName() + " : " + stationData.item(j).getChildNodes().item(0).getNodeValue());
                 }
             }
-            System.out.println(weatherData.getData().toString());
-            items.add(weatherData);
+            if (weatherData.getLength() > 0) {
+                System.out.println(weatherData.getData().toString());
+                items.add(weatherData);
+            }
         }
         /*
         first check the integrity of the files
          */
         return new DataFrame(items);
     }
-
-
 }

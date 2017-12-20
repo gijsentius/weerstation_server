@@ -18,6 +18,7 @@ public class DataFrame implements Iterable{
 
     public DataFrame(LinkedList<DataItem> items) {
         this.items = items;
+        this.size = items.size();  //Check this way of reading the size
     }
 
     public void addItem(DataItem item) {
