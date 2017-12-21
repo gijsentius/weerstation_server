@@ -36,7 +36,7 @@ public class DataUpdateHandler implements Runnable {
         System.out.println("Wow the data update thread is running");
         try {
             storageHandler.update(dataFrames);
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             ExceptionLogger.logException(e);
         }
     }

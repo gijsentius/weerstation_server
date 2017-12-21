@@ -44,11 +44,9 @@ public class InputDataParser {
                 }
             }
             if (weatherData.getLength() > 0) {
-                System.out.println(weatherData.getData().toString());
                 items.add(weatherData);
             }
         }
-//        DataLogger.logData(items);
         /*
         first check the integrity of the files
          */

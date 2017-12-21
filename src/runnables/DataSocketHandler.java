@@ -56,7 +56,6 @@ public class DataSocketHandler implements Runnable {
         while (running) {
             try {
                 Document xmlDocument = XMLReceiver.receiveDocument(clientSocket.getInputStream());
-//                PrettyPrinters.printDocument(xmlDocument, System.out);  //Printer for documents, comment out in production phase
                 DataFrame dataFrame = InputDataParser.parse(xmlDocument);
                 dataFrameBuffer.updateBuffer(dataFrame);
             } catch (BufferOverflowPreventException e) {
