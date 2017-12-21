@@ -1,5 +1,7 @@
 package loggers;
 
+import helpers.LogWriter;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,7 +37,6 @@ public class ExceptionLogger {
      * @param e
      */
     public synchronized static void logException(Exception e) {
-//        String pathname = "C:\\Users\\Gijs\\Desktop\\TODO\\" + "error_log_" + LocalDate.now().toString() + ".txt";
         String pathname = "error_log_" + LocalDate.now().toString() + ".txt";
         Path file = Paths.get(pathname);
         StringWriter sw = new StringWriter();
@@ -43,15 +44,7 @@ public class ExceptionLogger {
         e.printStackTrace(new PrintWriter(sw)); // get stacktrace from exception
         String data = sw.toString();
         List<String> lines = Arrays.asList(data);
-        try {
-            if (Files.exists(file)) {
-                Files.write(file, lines, StandardOpenOption.APPEND);
-            } else {
-                Files.write(file, lines, StandardOpenOption.CREATE_NEW);
-            }
-        } catch (IOException ex) {
-            e.printStackTrace();
-        }
+        LogWriter.writeToLog(file, lines);
     }
 
     /**

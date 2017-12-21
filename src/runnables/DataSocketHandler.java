@@ -24,7 +24,6 @@ import java.net.Socket;
  * https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html
  * https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html
  * https://stackoverflow.com/questions/4666748/how-to-read-bufferedreader-faster
- * TODO: fix the exception logging system
  */
 public class DataSocketHandler implements Runnable {
     private DataFrameBuffer dataFrameBuffer;
@@ -64,7 +63,7 @@ public class DataSocketHandler implements Runnable {
             }  catch (IOException | TransformerConfigurationException | InactiveSocketException e) {
                 ExceptionLogger.logException(e);
                 running = false;  // Check for a more subtle solution
-            } catch (ParserConfigurationException | TransformerException | SAXException e) {
+            } catch (ParserConfigurationException | SAXException e) {
                 ExceptionLogger.logException(e);
             }
         }
