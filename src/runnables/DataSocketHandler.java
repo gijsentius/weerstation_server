@@ -5,6 +5,7 @@ import exceptions.InactiveSocketException;
 import helpers.InputDataParser;
 import helpers.XMLReceiver;
 import interfaces.DataItem;
+import interfaces.StorageHandler;
 import loggers.DataLogger;
 import loggers.ExceptionLogger;
 import models.DataFrame;
@@ -29,15 +30,17 @@ import java.net.Socket;
 public class DataSocketHandler implements Runnable {
     private DataFrameBuffer dataFrameBuffer;
 //    private ServerSocket serverSocket;
-    private InputDataParser inputDataParser;  // could be static but then synchronised should be used and performance would be lost
+//    private InputDataParser inputDataParser;  // could be static but then synchronised should be used and performance would be lost
+    private StorageHandler storageHandler;
     private Socket clientSocket;
     private boolean running;
 
-    public DataSocketHandler(Socket clientSocket, DataFrameBuffer dataFrameBuffer) throws IOException {
+    public DataSocketHandler(Socket clientSocket, DataFrameBuffer dataFrameBuffer, StorageHandler storageHandler) throws IOException {
         this.dataFrameBuffer = dataFrameBuffer;
 //        this.serverSocket = new ServerSocket(socketNumber);
+        this.storageHandler = storageHandler;
         this.clientSocket = clientSocket;
-        this.inputDataParser = new InputDataParser();
+//        this.inputDataParser = new InputDataParser();
         running = true;
     }
 
@@ -59,7 +62,7 @@ public class DataSocketHandler implements Runnable {
                 DataFrame dataFrame = InputDataParser.parse(xmlDocument);
                 dataFrameBuffer.updateBuffer(dataFrame);
             } catch (BufferOverflowPreventException e) {
-                new Thread(new DataUpdateHandler(e.getBuffer())).start();
+                new Thread(new DataUpdateHandler(e.getBuffer(), storageHandler)).start();
             }  catch (IOException | TransformerConfigurationException | InactiveSocketException e) {
                 ExceptionLogger.logException(e);
                 running = false;  // Check for a more subtle solution

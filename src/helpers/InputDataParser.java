@@ -40,7 +40,8 @@ public class InputDataParser {
             WeatherData weatherData = new WeatherData();
             for (int j=0;j< stationData.getLength();j++) {
                 if (stationData.item(j).getChildNodes().getLength() > 0) {
-                    weatherData.addItem(stationData.item(j).getNodeName(), stationData.item(j).getChildNodes().item(0).getNodeValue());
+                    String value = stationData.item(j).getChildNodes().item(0).getNodeValue();
+                    weatherData.addItem(stationData.item(j).getNodeName(), value != "" ? value : null);
                 }
             }
             if (weatherData.getLength() > 0) {

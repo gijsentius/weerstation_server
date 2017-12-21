@@ -27,8 +27,9 @@ public class DataUpdateHandler implements Runnable {
         dataFrames = dataFrameBuffer;
     }
 
-    public DataUpdateHandler(DataFrame[] dataFrameBuffer) {
-
+    public DataUpdateHandler(DataFrame[] dataFrameBuffer, StorageHandler storageHandler) {
+        this.storageHandler = storageHandler;
+        dataFrames = dataFrameBuffer;
     }
 
     @Override
