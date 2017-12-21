@@ -48,7 +48,7 @@ public class InputDataParser {
                 items.add(weatherData);
             }
         }
-        DataLogger.logData(items);
+//        DataLogger.logData(items);
         /*
         first check the integrity of the files
          */
