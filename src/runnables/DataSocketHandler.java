@@ -5,6 +5,7 @@ import exceptions.InactiveSocketException;
 import helpers.InputDataParser;
 import helpers.XMLReceiver;
 import interfaces.DataItem;
+import loggers.DataLogger;
 import loggers.ExceptionLogger;
 import models.DataFrame;
 import models.DataFrameBuffer;

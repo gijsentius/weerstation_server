@@ -1,6 +1,7 @@
 package helpers;
 
 import interfaces.DataItem;
+import loggers.DataLogger;
 import models.DataFrame;
 import models.WeatherData;
 import org.w3c.dom.Document;
@@ -47,6 +48,7 @@ public class InputDataParser {
                 items.add(weatherData);
             }
         }
+        DataLogger.logData(items);
         /*
         first check the integrity of the files
          */

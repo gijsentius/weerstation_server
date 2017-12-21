@@ -22,11 +22,10 @@ public class DataLogger {
         String pathname = "data_log_" + LocalDate.now().toString() + ".txt";
         Path file = Paths.get(pathname);
         LinkedList<String> dataStrings = new LinkedList<>();
-        dataStrings.add(LocalDateTime.now().toString() + "\r\n");
+        dataStrings.add(LocalDateTime.now().toString());
         for (DataItem item : items) {
             dataStrings.add(item.getData().toString());
         }
-        List<String> lines = dataStrings;  // List with the data per data_item as a string
-        LogWriter.writeToLog(file, lines);  // function to write data to a file
+        LogWriter.writeToLog(file, dataStrings);  // function to write data to a file
     }
 }
