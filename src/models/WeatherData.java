@@ -6,10 +6,6 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-/**
- * TODO add all the weather data subjects
- * TODO fix the data in a dictionary structure so the data handling can be done easily
- */
 public class WeatherData implements DataItem {
 
     private HashMap<String, String > data;

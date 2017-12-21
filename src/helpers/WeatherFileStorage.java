@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class WeatherFileStorage implements StorageHandler{
 
     @Override
-    public void update(DataFrame[] dataFrames) throws SQLException {
+    public void update(DataFrame[] dataFrames) {
 
     }
 }

@@ -6,5 +6,5 @@ import java.sql.SQLException;
 
 public interface StorageHandler {
 
-    public void update(DataFrame[] dataFrames) throws SQLException;
+    public void update(DataFrame[] dataFrames);
 }
