@@ -8,13 +8,15 @@ import java.util.HashMap;
 
 public class WeatherData implements DataItem {
 
+    private String station;
     private HashMap<String, String > data;
     private int length;
 
     /**
      * Class that represents the weather data
      */
-    public WeatherData() {
+    public WeatherData(String station) {
+        this.station = station;
         this.data = new HashMap<>();
         this.length = 0;
     }
@@ -29,8 +31,8 @@ public class WeatherData implements DataItem {
     }
 
     @Override
-    public String[] getHeaders() {
-        return null;
+    public String getIdentifier() {
+        return station;
     }
 
     @Override
