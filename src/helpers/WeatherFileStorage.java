@@ -1,14 +1,14 @@
 package helpers;
 
+import interfaces.DataItem;
 import interfaces.StorageHandler;
-import models.DataFrame;
 
-import java.sql.SQLException;
+import java.util.LinkedList;
 
 public class WeatherFileStorage implements StorageHandler{
 
     @Override
-    public void update(DataFrame[] dataFrames) {
+    public void update(LinkedList<DataItem> dataFrames) {
 
     }
 }

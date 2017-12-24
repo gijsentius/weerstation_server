@@ -21,6 +21,15 @@ public class WeatherData implements DataItem {
         this.length = 0;
     }
 
+    public WeatherData() {
+        this.data = new HashMap<>();
+        this.length = 0;
+    }
+
+    public void setStation(String station) {
+        this.station = station;
+    }
+
     public void addItem(String name, String value) {
         data.put(name, value);
         this.length++;

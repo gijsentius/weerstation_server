@@ -3,11 +3,9 @@ package helpers;
 import interfaces.DBConnector;
 import interfaces.DataItem;
 import interfaces.StorageHandler;
-import loggers.ExceptionLogger;
 import models.DataFrame;
 
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -38,7 +36,7 @@ public class WeatherDatabase extends DBConnector implements StorageHandler{
      * @throws SQLException
      */
     @Override
-    public void update(DataFrame[] dataFrames) {
+    public void update(LinkedList<DataItem> dataFrames) {
         StringBuilder query = new StringBuilder("INSERT INTO `measurements` ");
         StringBuilder query_item_names = new StringBuilder("(");
         StringBuilder query_item_values = new StringBuilder("(");

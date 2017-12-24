@@ -1,12 +1,10 @@
 package helpers;
 
 import interfaces.DataItem;
-import loggers.DataLogger;
 import models.DataFrame;
 import models.WeatherData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.LinkedList;
@@ -26,7 +24,7 @@ public class InputDataParser {
      * @param document
      * @return
      */
-    public static DataFrame parse(Document document) {
+    public static LinkedList<DataItem> parse(Document document) {
         int index = 0;
         document.getDocumentElement().normalize();
         LinkedList<DataItem> items = new LinkedList<>();
@@ -51,6 +49,6 @@ public class InputDataParser {
         /*
         first check the integrity of the files
          */
-        return new DataFrame(items);
+        return items;
     }
 }

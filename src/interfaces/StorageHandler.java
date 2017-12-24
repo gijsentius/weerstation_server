@@ -1,10 +1,8 @@
 package interfaces;
 
-import models.DataFrame;
-
-import java.sql.SQLException;
+import java.util.LinkedList;
 
 public interface StorageHandler {
 
-    public void update(DataFrame[] dataFrames);
+    public void update(LinkedList<DataItem> dataItems);
 }

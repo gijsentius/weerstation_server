@@ -7,20 +7,20 @@ import java.util.LinkedList;
 
 public class BufferOverflowPreventException extends Exception {
 
-    private DataFrame[] buffer;
-    private LinkedList<DataItem> itemBuffer;
+    private LinkedList<DataItem> buffer;
+    private String identifier;
 
-    public BufferOverflowPreventException(String message, DataFrame[] buffer) {
-        super(message);
-        this.buffer = buffer;
-    }
-
-    public BufferOverflowPreventException(String identifier, LinkedList<DataItem> data) {
+    public BufferOverflowPreventException(LinkedList<DataItem> data) {
         super("Buffer size almost exceeded");
-        this.itemBuffer = data;
+        this.buffer = data;
+        this.identifier = identifier;
     }
 
-    public DataFrame[] getBuffer() {
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public LinkedList<DataItem> getBuffer() {
         return buffer;
     }
 }
