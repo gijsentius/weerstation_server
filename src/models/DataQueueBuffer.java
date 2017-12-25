@@ -2,15 +2,23 @@ package models;
 
 import exceptions.BufferOverflowPreventException;
 import interfaces.DataItem;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class DataQueueBuffer {
-    HashMap<String, DataQueue> dataQueueBuffer;
+    private HashMap<String, DataQueue> dataQueueBuffer;
+    private int minQueueLength;
+    private int maxQueueLength;
 
-    public DataQueueBuffer() {
+    /**
+     *
+     * @param minQueueLength
+     * @param maxQueueLength
+     */
+    public DataQueueBuffer(int minQueueLength, int maxQueueLength) {
          dataQueueBuffer = new HashMap<>();
+         this.minQueueLength = minQueueLength;
+         this.maxQueueLength = maxQueueLength;
     }
 
     /**
@@ -24,15 +32,19 @@ public class DataQueueBuffer {
         LinkedList<DataItem> overflow = new LinkedList<>();
         for (DataItem di : dataItems) {
             try {
-                DataQueue dataQueue = dataQueueBuffer.get(di.getIdentifier());
-                dataQueue.update(di);
+                String id = di.getIdentifier();
+                if (dataQueueBuffer.containsKey(id)) {
+                    DataQueue dataQueue = dataQueueBuffer.get(di.getIdentifier());
+                    dataQueue.update(di);
+                } else {
+                    dataQueueBuffer.put(di.getIdentifier(), new DataQueue(id, minQueueLength, maxQueueLength, di));
+                }
             } catch (BufferOverflowPreventException e) {
                 overflow.addAll(e.getBuffer());
                 overflowFlag = 1;
             }
         }
         if (overflowFlag == 1) {
-            overflowFlag = 0;
             throw new BufferOverflowPreventException(overflow);
         }
     }

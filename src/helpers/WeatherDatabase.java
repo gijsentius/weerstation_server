@@ -3,7 +3,6 @@ package helpers;
 import interfaces.DBConnector;
 import interfaces.DataItem;
 import interfaces.StorageHandler;
-import models.DataFrame;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -32,16 +31,15 @@ public class WeatherDatabase extends DBConnector implements StorageHandler{
 
     /**
      * source: https://stackoverflow.com/questions/1066589/iterate-through-a-hashmap
-     * @param dataFrames
+     * @param
      * @throws SQLException
      */
     @Override
-    public void update(LinkedList<DataItem> dataFrames) {
+    public void update(LinkedList<DataItem> data) {
         StringBuilder query = new StringBuilder("INSERT INTO `measurements` ");
         StringBuilder query_item_names = new StringBuilder("(");
         StringBuilder query_item_values = new StringBuilder("(");
-        for (DataFrame frame : dataFrames) {
-            for (DataItem item : frame.getItems()) {
+            for (DataItem item : data) {
                 int counter = 0;
                 for (Object o : item.getData().entrySet()) {
                     Map.Entry pair = (Map.Entry) o;
@@ -67,5 +65,4 @@ public class WeatherDatabase extends DBConnector implements StorageHandler{
             /*
             INSERT INTO `measurements` (`STN`, `TIMESTAMP`, `TEMP`, `DEWP`, `STP`, `SLP`, `VISIB`, `WDSP`, `PRCP`, `SNDP`, `FRSHTT`, `CLDC`, `WNDDIR`) VALUES ('3456', CURRENT_TIMESTAMP, '456', '4365', '456', '3465', '4365', '3465', '3465', '3465', '3465', '345', '3465')
              */
-    }
 }

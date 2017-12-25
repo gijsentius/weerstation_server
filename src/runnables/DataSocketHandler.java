@@ -6,18 +6,13 @@ import helpers.InputDataParser;
 import helpers.XMLReceiver;
 import interfaces.DataItem;
 import interfaces.StorageHandler;
-import loggers.DataLogger;
 import loggers.ExceptionLogger;
-import models.DataFrame;
-import models.DataFrameBuffer;
 import models.DataQueueBuffer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import tests.PrettyPrinters;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import java.io.*;
 import java.net.Socket;
@@ -39,7 +34,6 @@ public class DataSocketHandler implements Runnable {
 
     public DataSocketHandler(Socket clientSocket, DataQueueBuffer dataQueueBuffer, StorageHandler storageHandler) throws IOException {
         this.dataQueueBuffer = dataQueueBuffer;
-//        this.serverSocket = new ServerSocket(socketNumber);
         this.storageHandler = storageHandler;
         this.clientSocket = clientSocket;
 //        this.inputDataParser = new InputDataParser();
@@ -64,6 +58,7 @@ public class DataSocketHandler implements Runnable {
                 LinkedList<DataItem> dataItems = InputDataParser.parse(xmlDocument);
                 dataQueueBuffer.update(dataItems);
             } catch (BufferOverflowPreventException e) {
+                ExceptionLogger.logException(e);
                 new Thread(new DataUpdateHandler(e.getBuffer(), storageHandler)).start();
             }  catch (IOException | TransformerConfigurationException | InactiveSocketException e) {
                 ExceptionLogger.logException(e);

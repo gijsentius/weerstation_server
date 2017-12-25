@@ -1,7 +1,6 @@
 package helpers;
 
 import interfaces.DataItem;
-import models.DataFrame;
 import models.WeatherData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -11,13 +10,6 @@ import java.util.LinkedList;
 
 public class InputDataParser {
 //    private static final int NUMBER_OF_DATA_ITEMS = 10;  // 10 is chosen because each xml file contains 10
-
-    public static DataFrame parse(String document) {
-        int index = 0;
-        LinkedList<DataItem> items = new LinkedList<>();
-        DataFrame df = new DataFrame(items);
-        return df;
-    }
 
     /**
      * source: https://stackoverflow.com/questions/4734586/how-to-get-root-node-attributes-on-java
@@ -39,7 +31,9 @@ public class InputDataParser {
             for (int j=0;j< stationData.getLength();j++) {
                 if (stationData.item(j).getChildNodes().getLength() > 0) {
                     String value = stationData.item(j).getChildNodes().item(0).getNodeValue();
-                    weatherData.addItem(stationData.item(j).getNodeName(), value != "" ? value : null);
+                    String name = stationData.item(j).getNodeName();
+                    if (name.equals("STN")) weatherData.setStation(value); // set station if value is station
+                    weatherData.addItem(name, !value.equals("") ? value : null);
                 }
             }
             if (weatherData.getLength() > 0) {

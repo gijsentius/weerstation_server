@@ -2,8 +2,6 @@ package models;
 
 import interfaces.DataItem;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashMap;
 
 public class WeatherData implements DataItem {

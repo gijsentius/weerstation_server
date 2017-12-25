@@ -1,7 +1,6 @@
 package exceptions;
 
 import interfaces.DataItem;
-import models.DataFrame;
 
 import java.util.LinkedList;
 

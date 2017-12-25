@@ -1,3 +1,5 @@
+# noinspection SqlResolveForFile
+
 CREATE TABLE `measurements`
 (
   `STN` INT(10) UNSIGNED NOT NULL ,

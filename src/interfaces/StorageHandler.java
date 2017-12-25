@@ -4,5 +4,5 @@ import java.util.LinkedList;
 
 public interface StorageHandler {
 
-    public void update(LinkedList<DataItem> dataItems);
+    void update(LinkedList<DataItem> dataItems);
 }
