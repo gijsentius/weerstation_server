@@ -57,7 +57,7 @@ public class WeatherDatabase extends DBConnector implements StorageHandler{
                 query.append(query_item_names);
                 query.append(" VALUES ");
                 query.append(query_item_values);
-                System.out.println(query.toString());
+//                System.out.println(query.toString());
 //            ResultSet rs = statement.executeQuery(query.toString()); // just an example
 //            rs.close();
             }
