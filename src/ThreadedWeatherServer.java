@@ -1,9 +1,12 @@
+import helpers.WeatherDatabase;
+import interfaces.StorageHandler;
 import loggers.ExceptionLogger;
-import models.DataFrameBuffer;
+import models.DataQueueBuffer;
 import runnables.DataSocketHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,19 +16,21 @@ import java.util.concurrent.Executors;
 public class ThreadedWeatherServer implements Runnable{
     private final ServerSocket serverSocket;
     private final ExecutorService pool;
-    private DataFrameBuffer dataFrameBuffer;
+    private DataQueueBuffer dataQueueBuffer;
+    private StorageHandler storageHandler;
 
-    public ThreadedWeatherServer(int port, int bufferSize, int poolSize) throws IOException {
+    public ThreadedWeatherServer(int port, int bufferSize, int poolSize) throws IOException, SQLException {
         serverSocket = new ServerSocket(port);
         pool = Executors.newFixedThreadPool(poolSize);
-        dataFrameBuffer = new DataFrameBuffer(bufferSize);
+        dataQueueBuffer = new DataQueueBuffer(30, 60);
+        storageHandler = new WeatherDatabase();
     }
 
     @Override
     public void run() {
             try {
                 while(true) {
-                    pool.execute(new DataSocketHandler(serverSocket.accept(), this.dataFrameBuffer));
+                    pool.execute(new DataSocketHandler(serverSocket.accept(), dataQueueBuffer, storageHandler));
                 }
             } catch (IOException e) {
                 pool.shutdown();
@@ -44,15 +49,11 @@ public class ThreadedWeatherServer implements Runnable{
 
     public static void main(String [ ] args)
     {
-        ThreadedWeatherServer ts = null;
         try {
-            ts = new ThreadedWeatherServer(8080, 1000, 800);
-            ts.run();
-        } catch (IOException e) {
-            if (ts != null) {  // maybe a more subtle solution can be found for the termination of the socket
-                ts.terminate();
+            new ThreadedWeatherServer(8080, 1000, 800).run();
+        } catch (IOException | SQLException e) {
+//                ts.terminate();  // maybe a more subtle solution can be found for the termination of the socket
                 ExceptionLogger.logException(e);
-            }
         }
     }
 }

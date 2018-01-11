@@ -1,11 +1,8 @@
 package interfaces;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import enums.SQLCommand;
-import models.DataFrame;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
