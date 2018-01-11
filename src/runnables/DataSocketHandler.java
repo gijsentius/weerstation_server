@@ -56,6 +56,7 @@ public class DataSocketHandler implements Runnable {
             try {
                 Document xmlDocument = XMLReceiver.receiveDocument(clientSocket.getInputStream());
                 LinkedList<DataItem> dataItems = InputDataParser.parse(xmlDocument);
+                // Hier moet de check data gebeuren
                 dataQueueBuffer.update(dataItems);
             } catch (BufferOverflowPreventException e) {
                 ExceptionLogger.logException(e);
