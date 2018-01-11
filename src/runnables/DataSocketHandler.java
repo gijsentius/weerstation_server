@@ -2,6 +2,7 @@ package runnables;
 
 import exceptions.BufferOverflowPreventException;
 import exceptions.InactiveSocketException;
+import helpers.DataIntegrityChecker;
 import helpers.InputDataParser;
 import helpers.XMLReceiver;
 import interfaces.DataItem;
@@ -56,6 +57,10 @@ public class DataSocketHandler implements Runnable {
             try {
                 Document xmlDocument = XMLReceiver.receiveDocument(clientSocket.getInputStream());
                 LinkedList<DataItem> dataItems = InputDataParser.parse(xmlDocument);
+                DataIntegrityChecker checker = new DataIntegrityChecker(dataQueueBuffer);
+                for (DataItem di: dataItems){
+                    checker.checkData(di);
+                }
                 // Hier moet de check data gebeuren
                 dataQueueBuffer.update(dataItems);
             } catch (BufferOverflowPreventException e) {

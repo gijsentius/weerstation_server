@@ -48,4 +48,9 @@ public class DataQueueBuffer {
             throw new BufferOverflowPreventException(overflow);
         }
     }
+
+    public HashMap getBuffer(){
+        return dataQueueBuffer;
+    }
+
 }

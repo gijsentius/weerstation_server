@@ -2,6 +2,8 @@ package models;
 
 import exceptions.BufferOverflowPreventException;
 import interfaces.DataItem;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class DataQueue {
@@ -41,5 +43,9 @@ public class DataQueue {
             }
             throw new BufferOverflowPreventException(tempBuffer);
         }
+    }
+
+    public LinkedList getBuffer(){
+        return dataBuffer;
     }
 }
