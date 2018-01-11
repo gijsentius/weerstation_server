@@ -1,4 +1,5 @@
 import helpers.WeatherDatabase;
+import helpers.WeatherFileStorage;
 import interfaces.StorageHandler;
 import loggers.ExceptionLogger;
 import models.DataQueueBuffer;
@@ -22,8 +23,8 @@ public class ThreadedWeatherServer implements Runnable{
     public ThreadedWeatherServer(int port, int bufferSize, int poolSize) throws IOException, SQLException {
         serverSocket = new ServerSocket(port);
         pool = Executors.newFixedThreadPool(poolSize);
-        dataQueueBuffer = new DataQueueBuffer(30, 60);
-        storageHandler = new WeatherDatabase();
+        dataQueueBuffer = new DataQueueBuffer(30, 30 + bufferSize); // because of extrapolation the buffer needs a minimum length of 30
+        storageHandler = new WeatherFileStorage(); // type of storageHandler
     }
 
     @Override
@@ -50,7 +51,7 @@ public class ThreadedWeatherServer implements Runnable{
     public static void main(String [ ] args)
     {
         try {
-            new ThreadedWeatherServer(8080, 1000, 800).run();
+            new ThreadedWeatherServer(8080, 1, 800).run();
         } catch (IOException | SQLException e) {
 //                ts.terminate();  // maybe a more subtle solution can be found for the termination of the socket
                 ExceptionLogger.logException(e);
