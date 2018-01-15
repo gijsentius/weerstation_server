@@ -47,7 +47,7 @@ public class DataSocketHandler implements Runnable {
      */
     public void closeConnection() throws IOException {
         clientSocket.close();
-//        serverSocket.close();
+//        serversSocket.close();
     }
 
     @Override
@@ -57,6 +57,7 @@ public class DataSocketHandler implements Runnable {
                 Document xmlDocument = XMLReceiver.receiveDocument(clientSocket.getInputStream());
                 LinkedList<DataItem> dataItems = InputDataParser.parse(xmlDocument);
                 // Hier moet de check data gebeuren
+                System.out.println("Dit is een socket!");
                 dataQueueBuffer.update(dataItems);
             } catch (BufferOverflowPreventException e) {
                 ExceptionLogger.logException(e);
