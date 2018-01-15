@@ -67,6 +67,8 @@ public class DataSocketHandler implements Runnable {
                 running = false;  // Check for a more subtle solution
             } catch (ParserConfigurationException | SAXException e) {
                 ExceptionLogger.logException(e);
+            } catch (Exception e) {
+                ExceptionLogger.logException(e);
             }
         }
     }
