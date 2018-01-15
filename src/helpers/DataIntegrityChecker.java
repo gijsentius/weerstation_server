@@ -42,46 +42,55 @@ public class DataIntegrityChecker {
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("TEMP", identifier));
                     }
+                    break;
                     // Dauwpunt
                 case "DEWP":
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("DEWP", identifier));
                     }
+                    break;
                     // luchtdruk stationsniveau
                 case "STP":
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("STP", identifier));
                     }
+                    break;
                     // luchtdruk op zeeniveau
                 case "SLP":
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("SLP", identifier));
                     }
+                    break;
                     // Zichtbaarheid in kilometers
                 case "VISIB":
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("VISIB", identifier));
                     }
+                    break;
                     // windsnelheid
                 case "WDSP":
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("WDSP", identifier));
                     }
+                    break;
                     // neerslag
                 case "PRCP":
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("PRCP", identifier));
                     }
+                    break;
                     // Sneeuw
                 case "SNDP":
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("SNDP", identifier));
                     }
+                    break;
                     // bewolking
                 case "CLDC":
                     if (pair.getValue() == null){
                         pair.setValue((Float)calcMissingMeasurement("CLDC", identifier));
                     }
+                    break;
                     // windrichting
                 case "WNDDIR":
                     if (pair.getValue() == null){
