@@ -52,7 +52,7 @@ public class ThreadedWeatherServer implements Runnable{
     {
         try {
             System.out.println("De server werkt");
-            new ThreadedWeatherServer(22, 10, 800).run();
+            new ThreadedWeatherServer(80, 10, 800).run();
         } catch (IOException | SQLException e) {
 //                ts.terminate();  // maybe a more subtle solution can be found for the termination of the socket
                 ExceptionLogger.logException(e);
