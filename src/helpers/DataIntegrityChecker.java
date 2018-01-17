@@ -1,8 +1,11 @@
 package helpers;
 
 import interfaces.DataItem;
+import models.DataQueue;
 import models.DataQueueBuffer;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class DataIntegrityChecker {
@@ -11,19 +14,37 @@ public class DataIntegrityChecker {
 
     public DataIntegrityChecker(DataQueueBuffer buffer) {
         this.buffer = buffer.getBuffer();
+
     }
     /*
     * calcMissingMeasurement expects a String key in its parameter
     * The key is given by checkdata if the value of the key == 0
      */
-    public float calcMissingMeasurement(String key, String identifier){
+    public float calcMissingMeasurement(String key, String identifier) {
         // dataqueuebuffer is een hashmap (met key=stations value is buffer)
         // buffer is weer een hashmap met (key = station, value = data)
+        int count = 0;
+        Float total = 0.0f;
+        Float average = 0.0f;
 
-        Object dataQueue = buffer.get(identifier); // nu krijg je dataqueue terug
+        DataQueue dataQueue = (DataQueue) buffer.get(identifier);
 
-        float placeholder = 3.6f;
-        return placeholder;
+        if (dataQueue != null){
+            LinkedList<DataItem> data = dataQueue.getBuffer();
+            int item_number = 0;
+            for (DataItem di : data) {
+                if (item_number <= 30) {
+                    HashMap d = di.getData();
+                    total += (Float) d.get(key);
+                    item_number++;
+                }
+            }
+            average = total/item_number;
+
+        } else{
+            return 0.0f;
+            }
+        return average;
 
     }
 
@@ -39,26 +60,8 @@ public class DataIntegrityChecker {
             switch ((String)pair.getKey()){
                 // temperature
                 case "TEMP":
-                    if (pair.getValue() == null){
+                    if (pair.getValue() != null){ // hier is gekozen om tijdelijk 0.0 te doen, om te testen.
                         pair.setValue((Float)calcMissingMeasurement("TEMP", identifier));
-                    }
-                    break;
-                    // Dauwpunt
-                case "DEWP":
-                    if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("DEWP", identifier));
-                    }
-                    break;
-                    // luchtdruk stationsniveau
-                case "STP":
-                    if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("STP", identifier));
-                    }
-                    break;
-                    // luchtdruk op zeeniveau
-                case "SLP":
-                    if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("SLP", identifier));
                     }
                     break;
                     // Zichtbaarheid in kilometers
@@ -85,12 +88,6 @@ public class DataIntegrityChecker {
                         pair.setValue((Float)calcMissingMeasurement("SNDP", identifier));
                     }
                     break;
-                    // bewolking
-                case "CLDC":
-                    if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("CLDC", identifier));
-                    }
-                    break;
                     // windrichting
                 case "WNDDIR":
                     if (pair.getValue() == null){
@@ -101,4 +98,5 @@ public class DataIntegrityChecker {
         }
         //                    pair.getKey() pair.getValue());
     }
+
 }

@@ -46,6 +46,7 @@ public class DataQueue {
     }
 
     public LinkedList getBuffer(){
+
         return dataBuffer;
     }
 }
