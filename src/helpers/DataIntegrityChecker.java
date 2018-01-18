@@ -20,36 +20,52 @@ public class DataIntegrityChecker {
     * calcMissingMeasurement expects a String key in its parameter
     * The key is given by checkdata if the value of the key == 0
      */
-    public float calcMissingMeasurement(String key, String identifier) {
+    private String calcMissingMeasurement(String key, String identifier, String value) {
         // dataqueuebuffer is een hashmap (met key=stations value is buffer)
         // buffer is weer een hashmap met (key = station, value = data)
         int count = 0;
-        Float total = 0.0f;
+        float total = 0.0f;
         Float average = 0.0f;
 
-        DataQueue dataQueue = (DataQueue) buffer.get(identifier);
+        DataQueue dataQueue = (DataQueue) buffer.get(identifier); // pak van de buffer alleen de data van bepaalt station
 
-        if (dataQueue != null){
-            LinkedList<DataItem> data = dataQueue.getBuffer();
+        if (dataQueue.getBuffer().size() >= 30){
+            LinkedList<DataItem> data = dataQueue.getBuffer(); // Een linkedlist met (0, data, 1, data)
             int item_number = 0;
-            for (DataItem di : data) {
+            for (DataItem di : data) { // Pak per keer de data van 0,1,2 etc...
                 if (item_number <= 30) {
-                    HashMap d = di.getData();
-                    total += (Float) d.get(key);
-                    item_number++;
+                    HashMap d = di.getData(); // pak de hashmap van data die hoort bij 0,1,2 etc...
+                    total += Float.parseFloat((String)d.get(key)); // krijg de waarde die hoort bij de ingegeven key en tel deze op bij total
+                    item_number++; // doe dit maximaal 30 keer
                 }
             }
             average = total/item_number;
-
-        } else{
-            return 0.0f;
+        } else {
+            return value;
             }
-        return average;
-
+        return average.toString();
     }
 
-    // Deze moet verandert worden naar een gemiddelde van 30 voorgaande metingen
-    // uitzoeken hoe we 30 voorgaande metingen uit de buffer krijgen
+    private float getAverageValue(String key, String identifier){
+        DataQueue dataQueue = (DataQueue) buffer.get(identifier);
+        LinkedList<DataItem> data = dataQueue.getBuffer();
+        int count = 0;
+        float returnValue = 0.0f;
+        for (DataItem di : data) {
+            if (count < 30) {
+                HashMap d = di.getData();
+                returnValue += Float.parseFloat((String) d.get(key));
+                count++;
+            }
+        }
+        returnValue = returnValue/count;
+        return returnValue;
+    }
+
+/*
+@param verwacht een dataItem
+Functie zet een goede waarde als de waarde mist of teveel afwijkt.
+ */
 
     public void checkData(DataItem dataItem) {
         HashMap items = dataItem.getData();
@@ -60,43 +76,41 @@ public class DataIntegrityChecker {
             switch ((String)pair.getKey()){
                 // temperature
                 case "TEMP":
-                    if (pair.getValue() != null){ // hier is gekozen om tijdelijk 0.0 te doen, om te testen.
-                        pair.setValue((Float)calcMissingMeasurement("TEMP", identifier));
+                    if ((Float)pair.getValue() - getAverageValue("TEMP", identifier) > 2){ // hier is gekozen om tijdelijk 0.0 te doen, om te testen.
+                        pair.setValue(calcMissingMeasurement("TEMP", identifier, (String)pair.getValue()));
                     }
                     break;
                     // Zichtbaarheid in kilometers
                 case "VISIB":
                     if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("VISIB", identifier));
+                        pair.setValue(calcMissingMeasurement("VISIB", identifier, (String)pair.getValue()));
                     }
                     break;
                     // windsnelheid
                 case "WDSP":
                     if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("WDSP", identifier));
+                        pair.setValue(calcMissingMeasurement("WDSP", identifier, (String)pair.getValue()));
                     }
                     break;
                     // neerslag
                 case "PRCP":
                     if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("PRCP", identifier));
+                        pair.setValue(calcMissingMeasurement("PRCP", identifier, (String)pair.getValue()));
                     }
                     break;
                     // Sneeuw
                 case "SNDP":
                     if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("SNDP", identifier));
+                        pair.setValue(calcMissingMeasurement("SNDP", identifier, (String)pair.getValue()));
                     }
                     break;
                     // windrichting
                 case "WNDDIR":
                     if (pair.getValue() == null){
-                        pair.setValue((Float)calcMissingMeasurement("WNDDIR", identifier));
+                        pair.setValue(calcMissingMeasurement("WNDDIR", identifier, (String)pair.getValue()));
                     }
                     break;
             }
         }
-        //                    pair.getKey() pair.getValue());
     }
-
 }
