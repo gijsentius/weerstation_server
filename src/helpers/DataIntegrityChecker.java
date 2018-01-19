@@ -26,7 +26,9 @@ public class DataIntegrityChecker {
         Float average;
 
         DataQueue dataQueue = (DataQueue) buffer.get(identifier); // pak van de buffer alleen de data van bepaalt station
-
+        if (dataQueue != null) {
+            System.out.println(dataQueue.getBuffer().size());
+        }
         if (dataQueue != null && dataQueue.getBuffer().size() >= 30){
             average = getAverageValue(key, identifier);
         } else {
@@ -78,7 +80,7 @@ Functie zet een goede waarde als de waarde mist of teveel afwijkt.
         for (Object o : items.entrySet()) {
             Map.Entry pair = (Map.Entry) o;
             // pair is op dit moment linkedlist met key en values
-            float marge = 0.1f;
+            float marge = 0.3f;
             switch ((String)pair.getKey()){
                 // temperature
                 case "TEMP":
@@ -91,31 +93,31 @@ Functie zet een goede waarde als de waarde mist of teveel afwijkt.
                     break;
                     // Zichtbaarheid in kilometers
                 case "VISIB":
-                    if (pair.getValue() != null){
+                    if (pair.getValue() == null){
                         pair.setValue(calcMissingMeasurement("VISIB", identifier, (String)pair.getValue()));
                     }
                     break;
                     // windsnelheid
                 case "WDSP":
-                    if (pair.getValue() != null){
+                    if (pair.getValue() == null){
                         pair.setValue(calcMissingMeasurement("WDSP", identifier, (String)pair.getValue()));
                     }
                     break;
                     // neerslag
                 case "PRCP":
-                    if (pair.getValue() != null){
+                    if (pair.getValue() == null){
                         pair.setValue(calcMissingMeasurement("PRCP", identifier, (String)pair.getValue()));
                     }
                     break;
                     // Sneeuw
                 case "SNDP":
-                    if (pair.getValue() != null){
+                    if (pair.getValue() == null){
                         pair.setValue(calcMissingMeasurement("SNDP", identifier, (String)pair.getValue()));
                     }
                     break;
                     // windrichting
                 case "WNDDIR":
-                    if (pair.getValue() != null){
+                    if (pair.getValue() == null){
                         pair.setValue(calcMissingMeasurement("WNDDIR", identifier, (String)pair.getValue()));
                     }
                     break;
