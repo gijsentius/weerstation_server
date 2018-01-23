@@ -26,12 +26,13 @@ public class DataIntegrityChecker {
         Float average;
 
         DataQueue dataQueue = (DataQueue) buffer.get(identifier); // pak van de buffer alleen de data van bepaalt station
-        if (dataQueue != null) {
-            System.out.println(dataQueue.getBuffer().size());
-        }
-        if (dataQueue != null && dataQueue.getBuffer().size() >= 30){
+        //if (dataQueue != null) {
+            //System.out.println(dataQueue.getBuffer().size());
+        //}
+        if (dataQueue != null && dataQueue.getBuffer().size() >= 1){
             average = getAverageValue(key, identifier);
         } else {
+
             return value;
             }
         return average.toString();
@@ -69,6 +70,26 @@ public class DataIntegrityChecker {
             }
 
     }
+
+   private void checkPacket(HashMap pair)
+   {
+       String[] keys = {"DATE", "TIME", "TEMP", "DEWP","STP", "SLP", "VISIB", "WDSP", "PRCP", "SNDP", "FRSHTT",
+                                "CLDC", "WNDDIR"};
+       if (pair.size() != 14){
+           for(String key : keys) {
+
+               if(!pair.containsKey(key))
+               {
+                   pair.put(key, null);
+               }
+
+           }
+           System.out.println(pair);
+       }
+
+   }
+
+
 /*
 @param verwacht een dataItem
 Functie zet een goede waarde als de waarde mist of teveel afwijkt.
@@ -76,9 +97,11 @@ Functie zet een goede waarde als de waarde mist of teveel afwijkt.
 
     public void checkData(DataItem dataItem) {
         HashMap items = dataItem.getData();
+        checkPacket(items);
         String identifier = dataItem.getIdentifier();
         for (Object o : items.entrySet()) {
             Map.Entry pair = (Map.Entry) o;
+
             // pair is op dit moment linkedlist met key en values
             float marge = 0.3f;
             switch ((String)pair.getKey()){
@@ -122,6 +145,9 @@ Functie zet een goede waarde als de waarde mist of teveel afwijkt.
                     }
                     break;
             }
+
         }
+
+        System.out.println("de packet is nu: " + items);
     }
 }
