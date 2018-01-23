@@ -2,8 +2,11 @@ package models;
 
 import exceptions.BufferOverflowPreventException;
 import interfaces.DataItem;
+
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
+import models.WeatherData;
 
 public class DataQueueBuffer {
     private HashMap<String, DataQueue> dataQueueBuffer;
@@ -40,7 +43,34 @@ public class DataQueueBuffer {
                     dataQueueBuffer.put(di.getIdentifier(), new DataQueue(id, minQueueLength, maxQueueLength, di));
                 }
             } catch (BufferOverflowPreventException e) {
-                overflow.addAll(e.getBuffer());
+                WeatherData Items = new WeatherData();
+                String[] keys = {"TEMP", "DEWP","STP", "SLP", "VISIB", "WDSP", "PRCP", "SNDP", "FRSHTT",
+                        "CLDC", "WNDDIR"};
+                LinkedList<DataItem> tempbuffer = e.getBuffer();
+                String datum = "";
+                String station = "";
+                String tijd = "";
+                float totaalkey = 0.0f;
+                for(String key: keys) {
+                    System.out.println(key);
+                    for (DataItem hoi : tempbuffer) {
+                        HashMap tijdelijk = hoi.getData();
+                        if(tijdelijk.get(key) != null) {
+                            totaalkey += Float.parseFloat((String) tijdelijk.get(key));
+                        }
+                        datum = tijdelijk.get("DATE").toString();
+                        station = tijdelijk.get("STN").toString();
+                        tijd = tijdelijk.get("Time").toString();
+
+                    }
+                    int grote = tempbuffer.size();
+                    totaalkey = totaalkey / tempbuffer.size();
+                    Items.addItem("DATE", datum);
+                    Items.addItem("STN",station);
+                    Items.addItem("TIME", tijd);
+                    Items.addItem(key, Float.toString(totaalkey));
+                }
+                overflow.add(Items);
                 overflowFlag = 1;
             }
         }

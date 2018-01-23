@@ -49,8 +49,11 @@ public class DataIntegrityChecker {
             for (DataItem di : data) {
                 if (count < 30) {
                     HashMap d = di.getData();
-                    total += Float.parseFloat((String) d.get(key));
-                    count++;
+                    if(d.get(key) != null) {
+                        total += Float.parseFloat((String) d.get(key));
+                        count++;
+                    }
+
                 }
             }
             value = total / count;
@@ -73,8 +76,7 @@ public class DataIntegrityChecker {
 
    private void checkPacket(HashMap pair)
    {
-       String[] keys = {"DATE", "TIME", "TEMP", "DEWP","STP", "SLP", "VISIB", "WDSP", "PRCP", "SNDP", "FRSHTT",
-                                "CLDC", "WNDDIR"};
+       String[] keys = {"TEMP", "VISIB", "WDSP", "PRCP", "SNDP", "WNDDIR"};
        if (pair.size() != 14){
            for(String key : keys) {
 
@@ -82,9 +84,7 @@ public class DataIntegrityChecker {
                {
                    pair.put(key, null);
                }
-
            }
-           System.out.println(pair);
        }
 
    }
@@ -147,7 +147,5 @@ Functie zet een goede waarde als de waarde mist of teveel afwijkt.
             }
 
         }
-
-        System.out.println("de packet is nu: " + items);
     }
 }
