@@ -48,7 +48,7 @@ public class DataSocketHandler implements Runnable {
      */
     public void closeConnection() throws IOException {
         clientSocket.close();
-//        serverSocket.close();
+//        serversSocket.close();
     }
 
     @Override
@@ -62,6 +62,7 @@ public class DataSocketHandler implements Runnable {
                     checker.checkData(di);
                 }
                 // Hier moet de check data gebeuren
+                System.out.println("Dit is een socket!");
                 dataQueueBuffer.update(dataItems);
             } catch (BufferOverflowPreventException e) {
                 ExceptionLogger.logException(e);
@@ -70,6 +71,8 @@ public class DataSocketHandler implements Runnable {
                 ExceptionLogger.logException(e);
                 running = false;  // Check for a more subtle solution
             } catch (ParserConfigurationException | SAXException e) {
+                ExceptionLogger.logException(e);
+            } catch (Exception e) {
                 ExceptionLogger.logException(e);
             }
         }

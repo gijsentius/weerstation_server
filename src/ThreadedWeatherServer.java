@@ -1,4 +1,3 @@
-import helpers.WeatherDatabase;
 import helpers.WeatherFileStorage;
 import interfaces.StorageHandler;
 import loggers.ExceptionLogger;
@@ -29,14 +28,14 @@ public class ThreadedWeatherServer implements Runnable{
 
     @Override
     public void run() {
-            try {
-                while(true) {
-                    pool.execute(new DataSocketHandler(serverSocket.accept(), dataQueueBuffer, storageHandler));
-                }
-            } catch (IOException e) {
-                pool.shutdown();
-                ExceptionLogger.logException(e);
+        try {
+            while(true) {
+                pool.execute(new DataSocketHandler(serverSocket.accept(), dataQueueBuffer, storageHandler));
             }
+        } catch (IOException e) {
+            ExceptionLogger.logException(e);
+        }
+        this.pool.shutdown(); // shutdown thread pool after all threads finished
     }
 
     public void terminate() {
@@ -54,7 +53,7 @@ public class ThreadedWeatherServer implements Runnable{
             new ThreadedWeatherServer(8080, 30, 800).run();
         } catch (IOException | SQLException e) {
 //                ts.terminate();  // maybe a more subtle solution can be found for the termination of the socket
-                ExceptionLogger.logException(e);
+            ExceptionLogger.logException(e);
         }
     }
 }
