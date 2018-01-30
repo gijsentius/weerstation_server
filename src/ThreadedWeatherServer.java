@@ -7,6 +7,7 @@ import runnables.DataSocketHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.sql.SQLException;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,8 +50,14 @@ public class ThreadedWeatherServer implements Runnable{
 
     public static void main(String [ ] args)
     {
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.println("Enter the port you want to use: ");
+        int port = reader.nextInt(); // Scans the next token of the input as an int.
+        //once finished
+        reader.close();
+        System.out.println("We are using port: " + port);
         try {
-            new ThreadedWeatherServer(8080, 30, 800).run();
+            new ThreadedWeatherServer(port, 30, 800).run();
         } catch (IOException | SQLException e) {
 //                ts.terminate();  // maybe a more subtle solution can be found for the termination of the socket
             ExceptionLogger.logException(e);
