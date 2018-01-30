@@ -62,7 +62,6 @@ public class DataSocketHandler implements Runnable {
                     checker.checkData(di);
                 }
                 // Hier moet de check data gebeuren
-                System.out.println("Dit is een socket!");
                 dataQueueBuffer.update(dataItems);
             } catch (BufferOverflowPreventException e) {
                 ExceptionLogger.logException(e);
