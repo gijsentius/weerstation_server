@@ -18,7 +18,7 @@ public class WeatherFileStorage implements StorageHandler{
     @Override
     public void update(LinkedList<DataItem> dataItems) {
         Map listwithdata = new HashMap();
-        String path =  "../nfs/general/";
+        //String path =  "../nfs/general/";
         String foldername = "weerdata";
 
         File filefolder = new File(foldername);
@@ -34,7 +34,7 @@ public class WeatherFileStorage implements StorageHandler{
             //verandert de de dataitem naar een hashmap
             listwithdata = di.getData();
 
-            File filenamelocation = new File(path + filefolder + "/" + LocalDate.now().toString() + "_" + listwithdata.get("STN").toString());
+            File filenamelocation = new File(filefolder + "/" + LocalDate.now().toString() + "_" + listwithdata.get("STN").toString());
             //veranderd alle data in de hashmap naar een json array vervolgens wordt er gekeken of het bestand al bestaat.
             // wanneer deze bestaat wordt er data toegevoegd en anders een nieuw bestand aangemaakt met daar de data in.
             try (FileWriter file = new FileWriter(filenamelocation, true)) {
