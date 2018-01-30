@@ -18,7 +18,7 @@ public class WeatherFileStorage implements StorageHandler{
     @Override
     public void update(LinkedList<DataItem> dataItems) {
         Map listwithdata = new HashMap();
-        String path = System.getProperty("user.home") +  "\\nfs\\general\\";
+        String path =  "../nfs/general/";
         String foldername = "weerdata";
 
         File filefolder = new File(foldername);
