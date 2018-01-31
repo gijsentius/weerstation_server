@@ -22,15 +22,6 @@ public class WeatherFileStorage implements StorageHandler{
         System.out.println(path);
         String foldername = "weerdata";
 
-//        File filefolder = new File(foldername);
-//        if (! filefolder.exists())
-//        {
-//            System.out.println("Folder missing creating new folder");
-//            filefolder.mkdir();
-//            System.out.println("Folder created");
-//        }
-
-        //loopt door de ontvangen data heen
         for (DataItem di: dataItems) {
             //verandert de de dataitem naar een hashmap
             listwithdata = di.getData();
