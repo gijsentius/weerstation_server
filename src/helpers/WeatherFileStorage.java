@@ -18,24 +18,21 @@ public class WeatherFileStorage implements StorageHandler{
     @Override
     public void update(LinkedList<DataItem> dataItems) {
         Map listwithdata = new HashMap();
-        //String path =  File.separator + ".." + File.separator + "nfs" + File.separator + "general" + File.separator;
-       // System.out.println(path);
+        String path =  File.separator + ".." + File.separator + "nfs" + File.separator + "general" + File.separator;
         String foldername = "weerdata";
 
         for (DataItem di: dataItems) {
             //verandert de de dataitem naar een hashmap
             listwithdata = di.getData();
 
-            File filenamelocation = new File(LocalDate.now().toString() + "_" + listwithdata.get("STN").toString());
+            File filenamelocation = new File(path + LocalDate.now().toString() + "_" + listwithdata.get("STN").toString());
             //veranderd alle data in de hashmap naar een json array vervolgens wordt er gekeken of het bestand al bestaat.
             // wanneer deze bestaat wordt er data toegevoegd en anders een nieuw bestand aangemaakt met daar de data in.
             try (FileWriter file = new FileWriter(filenamelocation, true)) {
-                System.out.println("trying to make a file");
                 JSONArray lijstnaarjson = new JSONArray();
                 lijstnaarjson.add(listwithdata);
                 if (filenamelocation.exists())
                 {
-                    System.out.println("File " + listwithdata.get("STN") + " already exists.");
                     file.append(lijstnaarjson.toJSONString());
                     file.flush();
                 }
@@ -43,7 +40,6 @@ public class WeatherFileStorage implements StorageHandler{
                 {
                     file.write(lijstnaarjson.toJSONString());
                     file.flush();
-                    System.out.println("File " + listwithdata.get("STN") + " created.");
                 }
             } catch (IOException e) {
                 System.out.println("failed");
