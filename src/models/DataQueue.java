@@ -41,6 +41,7 @@ public class DataQueue {
                 dataBuffer.removeFirst();  // remove the first item
                 counter++;
             }
+            length = 0;
             throw new BufferOverflowPreventException(tempBuffer);
         }
     }
