@@ -18,24 +18,24 @@ public class WeatherFileStorage implements StorageHandler{
     @Override
     public void update(LinkedList<DataItem> dataItems) {
         Map listwithdata = new HashMap();
-        String path =  System.getProperty("path.separator") + ".." + System.getProperty("path.separator") + "nfs" + System.getProperty("path.separator") + "general" + System.getProperty("path.separator");
+        String path =  File.separator + ".." + File.separator + "nfs" + File.separator + "general" + File.separator;
         System.out.println(path);
         String foldername = "weerdata";
 
-        File filefolder = new File(foldername);
-        if (! filefolder.exists())
-        {
-            System.out.println("Folder missing creating new folder");
-            filefolder.mkdir();
-            System.out.println("Folder created");
-        }
+//        File filefolder = new File(foldername);
+//        if (! filefolder.exists())
+//        {
+//            System.out.println("Folder missing creating new folder");
+//            filefolder.mkdir();
+//            System.out.println("Folder created");
+//        }
 
         //loopt door de ontvangen data heen
         for (DataItem di: dataItems) {
             //verandert de de dataitem naar een hashmap
             listwithdata = di.getData();
 
-            File filenamelocation = new File(path + filefolder + System.getProperty("path.separator") + LocalDate.now().toString() + "_" + listwithdata.get("STN").toString());
+            File filenamelocation = new File(path + File.separator + LocalDate.now().toString() + "_" + listwithdata.get("STN").toString());
             //veranderd alle data in de hashmap naar een json array vervolgens wordt er gekeken of het bestand al bestaat.
             // wanneer deze bestaat wordt er data toegevoegd en anders een nieuw bestand aangemaakt met daar de data in.
             try (FileWriter file = new FileWriter(filenamelocation, true)) {
