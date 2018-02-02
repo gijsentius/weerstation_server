@@ -11,7 +11,6 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.time.LocalDate;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -19,33 +18,46 @@ public class WeatherFileStorage implements StorageHandler {
 
     @Override
     public void update(LinkedList<DataItem> dataItems) {
-        Map listwithdata = new HashMap();
         String path = File.separator + ".." + File.separator + "nfs" + File.separator + "general" + File.separator;
-        String foldername = "weerdata";
-
         for (DataItem di : dataItems) {
-            listwithdata = di.getData();
-            File file = new File(path + LocalDate.now().toString() + "_" + listwithdata.get("STN").toString());
+            Map dataMap = di.getData();
+            File file = new File(path + LocalDate.now().toString() + "_" + dataMap.get("STN").toString());
             if (file.exists()) // update the existing file
             {
-
+                try {
+                    JSONArray jsonArray = readDataFromFile(file);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.putAll(dataMap);
+                    jsonArray.add(jsonObject);
+                    writeDataToFile(jsonArray, file);
+                } catch (IOException | ParseException e) {
+                    ExceptionLogger.logException(e);
+                }
             } else // make a new file
             {
-
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.putAll(dataMap);
+                    JSONArray jsonArray = new JSONArray();
+                    jsonArray.add(jsonObject);
+                    writeDataToFile(jsonArray, file);
+                } catch (IOException e) {
+                    ExceptionLogger.logException(e);
+                }
             }
         }
     }
 
     private void writeDataToFile(JSONArray jsonArray, File file) throws IOException {
-        StringWriter out = new StringWriter();
-        jsonArray.writeJSONString(out);
+        FileWriter jsonFileWriter = new FileWriter(file);
+        jsonFileWriter.write(jsonArray.toJSONString());
+        jsonFileWriter.flush();
+        jsonFileWriter.close();
     }
 
     private JSONArray readDataFromFile(File file) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         FileReader fileReader = new FileReader(file);
-        Object obj = (JSONObject) parser.parse(fileReader);
-        JSONObject jsonObject = (JSONObject) obj;
-        return (JSONArray) jsonObject.get(0);
+        return (JSONArray) parser.parse(fileReader);
     }
 }
