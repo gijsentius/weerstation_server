@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 /**
  * Source: https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html
  */
-public class ThreadedWeatherServer implements Runnable{
+public class ThreadedWeatherServer {
     private final ServerSocket serverSocket;
     private final ExecutorService pool;
     private DataQueueBuffer dataQueueBuffer;
@@ -27,7 +27,6 @@ public class ThreadedWeatherServer implements Runnable{
         storageHandler = new WeatherFileStorage(); // type of storageHandler
     }
 
-    @Override
     public void run() {
         try {
             while(true) {
@@ -50,17 +49,21 @@ public class ThreadedWeatherServer implements Runnable{
 
     public static void main(String [ ] args)
     {
-        Scanner reader = new Scanner(System.in);  // Reading from System.in
-        System.out.println("Enter the port you want to use: ");
-        int port = reader.nextInt(); // Scans the next token of the input as an int.
-        //once finished
-        reader.close();
-        System.out.println("We are using port: " + port);
-        try {
-            new ThreadedWeatherServer(port, 30, 800).run();
-        } catch (IOException | SQLException e) {
-//                ts.terminate();  // maybe a more subtle solution can be found for the termination of the socket
-            ExceptionLogger.logException(e);
+        if (args.length > 0) {
+            try {
+                int port = Integer.parseInt(args[0]);
+                System.out.println("We are using port: " + port);
+                new ThreadedWeatherServer(port, 30, 800).run();
+            } catch (IOException | SQLException e) {
+                ExceptionLogger.logException(e);
+            }
+        } else {
+            try {
+                System.out.println("We are using port: 7789");
+                new ThreadedWeatherServer(7789, 30, 800).run();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

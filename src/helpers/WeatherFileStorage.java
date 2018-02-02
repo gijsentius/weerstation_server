@@ -2,49 +2,62 @@ package helpers;
 
 import interfaces.DataItem;
 import interfaces.StorageHandler;
+import loggers.ExceptionLogger;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class WeatherFileStorage implements StorageHandler{
+public class WeatherFileStorage implements StorageHandler {
 
     @Override
     public void update(LinkedList<DataItem> dataItems) {
-        Map listwithdata = new HashMap();
-        String path =  File.separator + ".." + File.separator + "nfs" + File.separator + "general" + File.separator;
-        String foldername = "weerdata";
-
-        for (DataItem di: dataItems) {
-            //verandert de de dataitem naar een hashmap
-            listwithdata = di.getData();
-
-            File filenamelocation = new File(path + LocalDate.now().toString() + "_" + listwithdata.get("STN").toString());
-            //veranderd alle data in de hashmap naar een json array vervolgens wordt er gekeken of het bestand al bestaat.
-            // wanneer deze bestaat wordt er data toegevoegd en anders een nieuw bestand aangemaakt met daar de data in.
-            try (FileWriter file = new FileWriter(filenamelocation, true)) {
-                JSONArray lijstnaarjson = new JSONArray();
-                lijstnaarjson.add(listwithdata);
-                if (filenamelocation.exists())
-                {
-                    file.append(lijstnaarjson.toJSONString());
-                    file.flush();
+        String path = File.separator + ".." + File.separator + "nfs" + File.separator + "general" + File.separator;
+        for (DataItem di : dataItems) {
+            Map dataMap = di.getData();
+            File file = new File(path + LocalDate.now().toString() + "_" + dataMap.get("STN").toString());
+            if (file.exists()) // update the existing file
+            {
+                try {
+                    JSONArray jsonArray = readDataFromFile(file);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.putAll(dataMap);
+                    jsonArray.add(jsonObject);
+                    writeDataToFile(jsonArray, file);
+                } catch (IOException | ParseException e) {
+                    ExceptionLogger.logException(e);
                 }
-                else
-                {
-                    file.write(lijstnaarjson.toJSONString());
-                    file.flush();
+            } else // make a new file
+            {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.putAll(dataMap);
+                    JSONArray jsonArray = new JSONArray();
+                    jsonArray.add(jsonObject);
+                    writeDataToFile(jsonArray, file);
+                } catch (IOException e) {
+                    ExceptionLogger.logException(e);
                 }
-            } catch (IOException e) {
-                System.out.println("failed");
-                e.printStackTrace();
             }
         }
+    }
+
+    private void writeDataToFile(JSONArray jsonArray, File file) throws IOException {
+        FileWriter jsonFileWriter = new FileWriter(file);
+        jsonFileWriter.write(jsonArray.toJSONString());
+        jsonFileWriter.flush();
+        jsonFileWriter.close();
+    }
+
+    private JSONArray readDataFromFile(File file) throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+        FileReader fileReader = new FileReader(file);
+        return (JSONArray) parser.parse(fileReader);
     }
 }
